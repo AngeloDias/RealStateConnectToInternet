@@ -60,12 +60,12 @@ class OverviewViewModel : ViewModel() {
         get() = _response
 
     init {
-        getMarsRealEstateProperties()
+        getMarsRealEstateProperties(MarsApiFilter.SHOW_ALL)
     }
 
-    private fun getMarsRealEstateProperties() {
+    private fun getMarsRealEstateProperties(filter: MarsApiFilter) {
         coroutineScope.launch {
-            val getPropertiesDeferred = MarsApi.retrofitService.getProperties()
+            var getPropertiesDeferred = MarsApi.retrofitService.getProperties(filter.value)
 
             try {
                 val listResult = getPropertiesDeferred.await()
@@ -91,6 +91,6 @@ class OverviewViewModel : ViewModel() {
     }
 
     fun updateFilter(filter: MarsApiFilter) {
-        getMarsRealEstateProperties()
+        getMarsRealEstateProperties(filter)
     }
 }
